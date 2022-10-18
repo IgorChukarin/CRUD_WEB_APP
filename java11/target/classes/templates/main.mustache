@@ -1,0 +1,17 @@
+<html>
+<body>
+    <div>
+        <form method="post">
+            <input type="name" placeholder="Введите название товара">
+            <button type="submit">Добавить</button>
+        </form>
+    </div>
+    <div>Список товаров</div>
+    {{#goods}}
+        <div>
+            <b>{{id}}</b>
+            <b>{{name}}</b>
+        </div>
+    {{/goods}}
+</body>
+</html>
