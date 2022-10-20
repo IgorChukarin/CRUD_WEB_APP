@@ -34,8 +34,8 @@ public class GreetingController {
     }
 
     @PostMapping
-    public String add(@RequestParam String name, Map<String, Object> model) {
-        Good good = new Good(name);
+    public String add(@RequestParam String name, @RequestParam int categoryId, Map<String, Object> model) {
+        Good good = new Good(name, categoryId);
 
         goodRepo.save(good);
 

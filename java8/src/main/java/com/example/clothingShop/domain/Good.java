@@ -25,8 +25,9 @@ public class Good {
     public Good() {
     }
 
-    public Good(String name) {
+    public Good(String name, int categoryId) {
         this.name = name;
+        this.categoryId = categoryId;
     }
 
 
