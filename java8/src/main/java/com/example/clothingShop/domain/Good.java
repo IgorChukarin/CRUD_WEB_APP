@@ -30,6 +30,13 @@ public class Good {
         this.categoryId = categoryId;
     }
 
+    public Good(String name, int categoryId, String size,  int count, int price) {
+        this.name = name;
+        this.size = size;
+        this.categoryId = categoryId;
+        this.count = count;
+        this.price = price;
+    }
 
     public Integer getId() {
         return id;
