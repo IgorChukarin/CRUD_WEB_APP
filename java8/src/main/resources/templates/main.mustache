@@ -1,26 +1,31 @@
 <html>
 <body>
 <div>
+    <form action="/logout" method="post">
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<div>
     <form method="post" action="add">
         <input type="text" name="name" placeholder="Наименование"/>
         <input type="text" name="categoryId" placeholder="Категория"/>
         <input type="text" name="size" placeholder="Размер"/>
         <input type="text" name="count" placeholder="Кол-во"/>
         <input type="text" name="price" placeholder="Цена"/>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
         <button type="submit">Добавить</button>
     </form>
-</div>
-<div>
     <form method="post" action="delete">
         <input type="number" name="id" placeholder="id"/>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
         <button type="submit">Удалить</button>
     </form>
-</div>
-<div>
     <form method="post" action="filter">
         <span>Цена</span>
         <input type="number" name="from" placeholder="От"/>
         <input type="number" name="to" placeholder="До"/>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
         <button type="submit">Найти</button>
     </form>
 </div>
@@ -47,6 +52,5 @@
             {{/goods}}
         </table>
     </div>
-
 </body>
 </html>
