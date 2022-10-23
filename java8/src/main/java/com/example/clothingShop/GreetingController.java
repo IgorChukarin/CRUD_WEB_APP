@@ -33,7 +33,7 @@ public class GreetingController {
         return "main";
     }
 
-    @PostMapping
+    @PostMapping("add")
     public String add(@RequestParam String name,
                       @RequestParam int categoryId,
                       @RequestParam String size,
@@ -48,6 +48,24 @@ public class GreetingController {
 
         model.put("goods", goods);
 
+        return "main";
+    }
+
+    @PostMapping("delete")
+    public String delete(@RequestParam Integer id, Map<String, Object> model) {
+
+        goodRepo.deleteById(id);
+
+        Iterable<Good> goods = goodRepo.findAll();
+
+        model.put("goods", goods);
+
+        return "main";
+    }
+
+    @PostMapping("filter")
+    public String filter(@RequestParam int from, @RequestParam int to) {
+        System.out.println(from + to);
         return "main";
     }
 }
