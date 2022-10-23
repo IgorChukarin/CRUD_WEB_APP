@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class GreetingController {
@@ -64,8 +68,24 @@ public class GreetingController {
     }
 
     @PostMapping("filter")
-    public String filter(@RequestParam int from, @RequestParam int to) {
-        System.out.println(from + to);
+    public String filter(@RequestParam Integer from, @RequestParam Integer to, Map<String, Object> model) {
+        Iterable<Good> goods = goodRepo.findAll();
+        ArrayList<Good> goodsList = new ArrayList<>();
+        List<Good> filteredGoodsList = new ArrayList<>();
+
+        if (from == null && to == null) {
+            model.put("goods", goods);
+            return "main";
+        }
+
+        goods.forEach(g -> goodsList.add(g));
+
+        filteredGoodsList = goodsList.stream()
+                .filter(g -> from < g.getPrice() && g.getPrice() < to).collect(Collectors.toList());
+
+        model.put("goods", filteredGoodsList);
+
+
         return "main";
     }
 }
