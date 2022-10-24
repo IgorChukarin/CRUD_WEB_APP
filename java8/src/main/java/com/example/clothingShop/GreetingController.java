@@ -83,4 +83,17 @@ public class GreetingController {
 
         return "main";
     }
+
+    @PostMapping("update")
+    public String update(@RequestParam Integer id, @RequestParam String name, Map<String, Object> model) {
+        Iterable<Good> goods = goodRepo.findAll();
+
+        Good good = goodRepo.findById(id).get();
+
+        good.setName(name);
+
+        model.put("goods", goods);
+
+        return "main";
+    }
 }

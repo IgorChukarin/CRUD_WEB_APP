@@ -1,9 +1,13 @@
 <html>
-<body>
+<head><font size="50" face="didot">My CRUD Web App</font></head>
+<body style="background-color:oldlace">
+    <title>
+        CRUD Web App
+    </title>
 <div>
     <form action="/logout" method="post">
         <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <input type="submit" value="Sign Out"/>
+        <input type="submit" value="Sign Out" style="background-color:#F76588;border-color:F76588"/>
     </form>
 </div>
 <div>
@@ -14,25 +18,29 @@
         <input type="text" name="count" placeholder="Кол-во"/>
         <input type="text" name="price" placeholder="Цена"/>
         <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <button type="submit">Добавить</button>
+        <button type="submit" style="background-color:EDED61;border-color:EDED61">Добавить</button>
     </form>
     <form method="post" action="delete">
         <input type="number" name="id" placeholder="id"/>
         <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <button type="submit">Удалить</button>
+        <button type="submit" style="background-color:EDED61;border-color:EDED61">Удалить</button>
     </form>
     <form method="post" action="filter">
-        <span>Цена</span>
         <input type="number" name="from" placeholder="От"/>
         <input type="number" name="to" placeholder="До"/>
         <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <button type="submit">Найти</button>
+        <button type="submit" style="background-color:EDED61;border-color:EDED61">Найти</button>
+    </form>
+    <form method="post" action="update">
+        <input type="number" name="id" placeholder="id"/>
+        <input type="text" name="name" placeholder="Новое наименование"/>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+        <button type="submit" style="background-color:EDED61;border-color:EDED61">Обновить</button>
     </form>
 </div>
-<div>Список товаров</div>
     <div>
-        <table border="1">
-            <tr>
+        <table bgcolor="25f4ab">
+            <tr bgcolor="b6fbe3">
                 <th>id</th>
                 <th>name</th>
                 <th>category</th>
@@ -41,7 +49,7 @@
                 <th>size</th>
             </tr>
             {{#goods}}
-            <tr>
+            <tr bgcolor="e7fef6">
                 <td><span>{{id}}</span></td>
                 <td><span>{{name}}</span></td>
                 <td><span>{{categoryId}}</span></td>
