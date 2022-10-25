@@ -1,46 +1,75 @@
 <html>
-<head><font size="50" face="didot">My CRUD Web App</font></head>
-<body style="background-color:oldlace">
+<head><div><font size="50" face="Georgia" color="ffccb3">My Web App</font></div></head>
+<style>
+    body {background-color: oldlace;}
+</style>
+<br>
+<body>
     <title>
         CRUD Web App
     </title>
-<div>
-    <form action="/logout" method="post">
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <input type="submit" value="Sign Out" style="background-color:#F76588;border-color:F76588"/>
-    </form>
-</div>
-<div>
-    <form method="post" action="add">
-        <input type="text" name="name" placeholder="Наименование"/>
-        <input type="text" name="categoryId" placeholder="Категория"/>
-        <input type="text" name="size" placeholder="Размер"/>
-        <input type="text" name="count" placeholder="Кол-во"/>
-        <input type="text" name="price" placeholder="Цена"/>
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <button type="submit" style="background-color:EDED61;border-color:EDED61">Добавить</button>
-    </form>
-    <form method="post" action="delete">
-        <input type="number" name="id" placeholder="id"/>
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <button type="submit" style="background-color:EDED61;border-color:EDED61">Удалить</button>
-    </form>
-    <form method="post" action="filter">
-        <input type="number" name="from" placeholder="От"/>
-        <input type="number" name="to" placeholder="До"/>
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <button type="submit" style="background-color:EDED61;border-color:EDED61">Найти</button>
-    </form>
-    <form method="post" action="update">
-        <input type="number" name="id" placeholder="id"/>
-        <input type="text" name="name" placeholder="Новое наименование"/>
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <button type="submit" style="background-color:EDED61;border-color:EDED61">Обновить</button>
-    </form>
-</div>
     <div>
-        <table bgcolor="25f4ab">
-            <tr bgcolor="b6fbe3">
+        <form method="post" action="add">
+            <input style="background-color:oldlace;border-color:ffccb3" type="text" name="name" placeholder="Наименование"/>
+<!--            <input style="background-color:oldlace;border-color:ffccb3" type="text" name="categoryId" placeholder="Категория"/>-->
+            <select name="categoryId">
+                <option value="1">Outerwear</option>
+                <option value="2">Jackets</option>
+                <option value="3">Trousers</option>
+                <option value="4">Jeans</option>
+                <option value="5">Shoes</option>
+                <option value="6">Sneakers</option>
+                <option value="7">Sweatpants</option>
+                <option value="8">Shorts</option>
+                <option value="9">Shirts</option>
+                <option value="10">Hats</option>
+            </select>
+            <select name="size">
+                <optgroup label="Clothes">
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </optgroup>
+                <optgroup label="Shoes">
+                    <option value="38">38</option>
+                    <option value="38">39</option>
+                    <option value="38">40</option>
+                    <option value="38">41</option>
+                </optgroup>
+                <optgroup label="Hats">
+                    <option value="one_size">One Size</option>
+                </optgroup>
+            </select>
+
+<!--            <input style="background-color:oldlace;border-color:ffccb3" type="text" name="size" placeholder="Размер"/>\-->
+            <input style="background-color:oldlace;border-color:ffccb3" type="text" name="count" placeholder="Кол-во"/>
+            <input style="background-color:oldlace;border-color:ffccb3" type="text" name="price" placeholder="Цена"/>
+            <input style="background-color:oldlace;border-color:ffccb3" type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+            <button type="submit" style="background-color:EDED61;border-color:EDED61">Добавить</button>
+        </form>
+        <form method="post" action="filter">
+            <input style="background-color:oldlace;border-color:ffccb3" type="number" name="from" placeholder="От"/>
+            <input style="background-color:oldlace;border-color:ffccb3" type="number" name="to" placeholder="До"/>
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+            <button type="submit" style="background-color:EDED61;border-color:EDED61">Найти по цене</button>
+        </form>
+        <form method="post" action="update">
+            <input style="background-color:oldlace;border-color:ffccb3" type="number" name="id" placeholder="id"/>
+            <input style="background-color:oldlace;border-color:ffccb3" type="text" name="name" placeholder="Новое наименование"/>
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+            <button type="submit" style="background-color:EDED61;border-color:EDED61">Обновить</button>
+        </form>
+        <form method="post" action="delete">
+            <input style="background-color:oldlace;border-color:ffccb3" type="number" name="id" placeholder="id"/>
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+            <button type="submit" style="background-color:EDED61;border-color:EDED61">Удалить</button>
+        </form>
+    </div>
+    {{name}}
+    <div>
+        <table bgcolor="ffccb3">
+            <tr bgcolor="ffccb3">
                 <th>id</th>
                 <th>name</th>
                 <th>category</th>
@@ -49,7 +78,7 @@
                 <th>size</th>
             </tr>
             {{#goods}}
-            <tr bgcolor="e7fef6">
+            <tr bgcolor="oldlace">
                 <td><span>{{id}}</span></td>
                 <td><span>{{name}}</span></td>
                 <td><span>{{categoryId}}</span></td>
@@ -59,6 +88,13 @@
             </tr>
             {{/goods}}
         </table>
+    </div>
+    <span><br></span>
+    <div>
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+            <input type="submit" value="Sign Out" style="background-color:#F76588;border-color:F76588"/>
+        </form>
     </div>
 </body>
 </html>

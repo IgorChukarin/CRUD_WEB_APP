@@ -27,7 +27,7 @@ public class GreetingController {
     @GetMapping("/main")
     public String main(Map<String, Object> model) {
         Iterable<Good> goods = goodRepo.findAll();
-
+        model.put("name", "");
         model.put("goods", goods);
 
         return "main";
@@ -40,6 +40,39 @@ public class GreetingController {
                       @RequestParam int count,
                       @RequestParam int price,
                       Map<String, Object> model) {
+
+        if ((categoryId == 1 ||
+                categoryId == 2 ||
+                categoryId == 3 ||
+                categoryId == 4 ||
+                categoryId == 7 ||
+                categoryId == 8 ||
+                categoryId == 9) &&
+                !size.equals("S") && !size.equals("M") && !size.equals("L") && !size.equals("XL")
+        ) {
+            Iterable<Good> goods = goodRepo.findAll();
+            model.put("name", "Неверный тип размера");
+            model.put("goods", goods);
+            return "main";
+        }
+
+        if ((categoryId == 5 ||
+                categoryId == 6) &&
+                !size.equals("38") && !size.equals("39") && !size.equals("40") && !size.equals("41")) {
+            Iterable<Good> goods = goodRepo.findAll();
+            model.put("name", "Неверный тип размера");
+            model.put("goods", goods);
+            return "main";
+        }
+
+        System.out.println(size);
+        if (categoryId == 10 && !size.equals("one_size")) {
+            Iterable<Good> goods = goodRepo.findAll();
+            model.put("name", "Неверный тип размера");
+            model.put("goods", goods);
+            return "main";
+        }
+
         Good good = new Good(name, categoryId, size, count, price);
 
         goodRepo.save(good);
@@ -67,7 +100,7 @@ public class GreetingController {
     public String filter(@RequestParam Integer from, @RequestParam Integer to, Map<String, Object> model) {
         Iterable<Good> goods = goodRepo.findAll();
         ArrayList<Good> goodsList = new ArrayList<>();
-        List<Good> filteredGoodsList = new ArrayList<>();
+        List<Good> filteredGoodsList;
 
         if (from == null && to == null) {
             model.put("goods", goods);
@@ -88,9 +121,9 @@ public class GreetingController {
     public String update(@RequestParam Integer id, @RequestParam String name, Map<String, Object> model) {
         Iterable<Good> goods = goodRepo.findAll();
 
-        Good good = goodRepo.findById(id).get();
+        goodRepo.findById(id).get().setName(name);
 
-        good.setName(name);
+        goodRepo.saveAll(goods);
 
         model.put("goods", goods);
 
