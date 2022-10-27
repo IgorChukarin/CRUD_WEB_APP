@@ -79,6 +79,7 @@ public class GreetingController {
 
         Iterable<Good> goods = goodRepo.findAll();
 
+        model.put("name", "");
         model.put("goods", goods);
 
         return "main";
@@ -103,6 +104,7 @@ public class GreetingController {
         List<Good> filteredGoodsList;
 
         if (from == null && to == null) {
+            model.put("name", "");
             model.put("goods", goods);
             return "main";
         }
@@ -112,6 +114,7 @@ public class GreetingController {
         filteredGoodsList = goodsList.stream()
                 .filter(g -> from < g.getPrice() && g.getPrice() < to).collect(Collectors.toList());
 
+        model.put("name", "");
         model.put("goods", filteredGoodsList);
 
         return "main";
