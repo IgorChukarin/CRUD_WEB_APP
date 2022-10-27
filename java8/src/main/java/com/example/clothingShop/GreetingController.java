@@ -27,7 +27,7 @@ public class GreetingController {
     @GetMapping("/main")
     public String main(Map<String, Object> model) {
         Iterable<Good> goods = goodRepo.findAll();
-        model.put("name", "");
+        model.put("message", "");
         model.put("goods", goods);
 
         return "main";
@@ -51,7 +51,7 @@ public class GreetingController {
                 !size.equals("S") && !size.equals("M") && !size.equals("L") && !size.equals("XL")
         ) {
             Iterable<Good> goods = goodRepo.findAll();
-            model.put("name", "Неверный тип размера");
+            model.put("message", "Неверный тип размера");
             model.put("goods", goods);
             return "main";
         }
@@ -60,7 +60,7 @@ public class GreetingController {
                 categoryId == 6) &&
                 !size.equals("38") && !size.equals("39") && !size.equals("40") && !size.equals("41")) {
             Iterable<Good> goods = goodRepo.findAll();
-            model.put("name", "Неверный тип размера");
+            model.put("message", "Неверный тип размера");
             model.put("goods", goods);
             return "main";
         }
@@ -68,7 +68,7 @@ public class GreetingController {
         System.out.println(size);
         if (categoryId == 10 && !size.equals("one_size")) {
             Iterable<Good> goods = goodRepo.findAll();
-            model.put("name", "Неверный тип размера");
+            model.put("message", "Неверный тип размера");
             model.put("goods", goods);
             return "main";
         }
@@ -79,7 +79,7 @@ public class GreetingController {
 
         Iterable<Good> goods = goodRepo.findAll();
 
-        model.put("name", "");
+        model.put("message", "Record added");
         model.put("goods", goods);
 
         return "main";
@@ -92,6 +92,7 @@ public class GreetingController {
 
         Iterable<Good> goods = goodRepo.findAll();
 
+        model.put("message", "Record deleted");
         model.put("goods", goods);
 
         return "main";
@@ -104,7 +105,7 @@ public class GreetingController {
         List<Good> filteredGoodsList;
 
         if (from == null && to == null) {
-            model.put("name", "");
+            model.put("message", "");
             model.put("goods", goods);
             return "main";
         }
@@ -114,7 +115,7 @@ public class GreetingController {
         filteredGoodsList = goodsList.stream()
                 .filter(g -> from < g.getPrice() && g.getPrice() < to).collect(Collectors.toList());
 
-        model.put("name", "");
+        model.put("message", "");
         model.put("goods", filteredGoodsList);
 
         return "main";
