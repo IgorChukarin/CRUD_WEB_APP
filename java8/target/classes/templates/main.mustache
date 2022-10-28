@@ -36,6 +36,11 @@ table {
 th, td {
   text-align: left;
   padding: 8px;
+  font-family: Arial;
+}
+
+th {
+ color: #1b1a19;
 }
 
 .centered {
@@ -55,6 +60,25 @@ button {
   cursor: pointer;
   border-radius: 8px;
 }
+
+form {
+ padding-left: 32px;
+ padding-top: 8px;
+}
+
+select {
+ width: 170px;
+}
+
+h1 {
+ color: #fac670;
+ font-size: 100%;
+ padding-bottom: 0px;
+ margin-bottom: 0px;
+ font-family: Arial;
+ font-weight: 700;
+}
+
 </style>
 <br>
 <body>
@@ -62,7 +86,8 @@ button {
         <div style="line-height: 20px; font-family: Arial; font-size: 190%; font-weight: 1000; color: #fac670; padding: 22px;">
             chukarin
         </div>
-        <form method="post" action="add" style="padding: 22px;">
+        <form method="post" action="add">
+            <h1>Add</h1>
             <input type="text" name="name" placeholder="Name"/>
             <br>
             <select name="categoryId">
@@ -78,7 +103,7 @@ button {
                 <option value="10">Hats</option>
             </select>
             <br>
-            <select name="size">
+            <select name="size" >
                 <optgroup label="Clothes">
                     <option value="S">S</option>
                     <option value="M">M</option>
@@ -102,26 +127,29 @@ button {
             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
             <button type="submit">Submit</button>
         </form>
-        <form method="post" action="filter" style="padding: 22px;">
+        <form method="post" action="filter">
+            <h1>Filter</h1>
             <input type="number" name="from" placeholder="From"/>
             <br>
             <input type="number" name="to" placeholder="To"/>
             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
             <button type="submit">Submit</button>
         </form>
-        <form method="post" action="update" style="padding: 22px;">
+        <form method="post" action="update">
+            <h1>Update</h1>
             <input type="number" name="id" placeholder="id"/>
             <br>
             <input type="text" name="name" placeholder="New name"/>
             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
             <button type="submit">Submit</button>
         </form>
-        <form method="post" action="delete" style="padding: 22px;">
+        <form method="post" action="delete">
+            <h1>Delete</h1>
             <input type="number" name="id" placeholder="id"/>
             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
             <button type="submit">Submit</button>
         </form>
-        <p class="centered" style="background-color: green">{{message}}</p>
+        <p class="centered" style="background-color: #fac670">{{message}}</p>
     </div>
     <div class="split right">
         <table>
