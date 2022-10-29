@@ -13,8 +13,23 @@
   border-radius: 8px;
 }
 
-div {
- color: #1b1a19
+p {
+ color: #1b1a19;
+ font-family: Arial;
+ font-size: 100%;
+ font-weight: 700;
+ margin: 2px;
+}
+
+button {
+  background-color: #04AA6D;
+  color: #ffffff;
+  padding: 10px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-size: 80%
 }
 
 </style>
@@ -22,14 +37,15 @@ div {
 <div style="line-height: 20px; font-family: Arial; font-size: 190%; font-weight: 1000; color: #fac670; padding: 22px;">
     chukarin
 </div>
-<div class="centered" style="background-color: #fac670">
+<div class="centered" style="background-color: #ffffff">
 <form action="login" method="post">
-    <div style="font-family: Arial; font-color: #1b1a19; font-weight:700">Log in to your account</div>
     <br>
-    <div><input style="margin-bottom: 6px; border-radius: 6px; border: 2px solid #f37925; background-color: #fef5e6" type="text" name="username" placeholder="Login"/></div>
-    <div><input style="margin-bottom: 6px; border-radius: 6px; border: 2px solid #f37925; background-color: #fef5e6" type="password" name="password" placeholder="Password"/></div>
+    <p>Username</p>
+    <div><input style="padding: 10px; font-size: 80%; margin-bottom: 6px; border: 1px solid #ccc; background-color: #ffffff" type="text" name="username" placeholder=" Enter Username"/></div>
+    <p>Password</p>
+    <div><input style="padding: 10px; font-size: 80%; margin-bottom: 6px; border: 1px solid #ccc; background-color: #ffffff" type="password" name="password" placeholder=" Enter Password"/></div>
     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-    <div><input type="submit" value="Sign In" style="background-color:#3ac261;border-radius: 8px; border: 2px solid #3ac261"/></div>
+    <div><button type="submit" value="Sign In">Login</button></div>
 </form>
 </div>
 </body>

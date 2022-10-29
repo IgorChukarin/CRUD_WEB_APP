@@ -3,6 +3,35 @@
 </head>
 <style>
 
+tr:first-child th:first-child { border-top-left-radius: 5px; }
+tr:first-child th:last-child { border-top-right-radius: 5px; }
+
+tr:last-child td:first-child { border-bottom-left-radius: 5px; }
+tr:last-child td:last-child { border-bottom-right-radius: 5px; }
+
+p {
+ color: green;
+ font-family: 'Courier New', monospace;
+ font-weight: 700;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1b1a19;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #353231;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 .split {
   height: 100%;
   width: 50%;
@@ -18,8 +47,8 @@
   background-color: #1b1a19;
 }
 
-/* Control the right side */
-  .right {
+
+.right {
   right: 0;
   background-color: #1b1a19;
 }
@@ -30,7 +59,9 @@ tr:nth-child(even) {
 
 table {
   border-collapse: collapse;
-  width: 100%;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 th, td {
@@ -51,124 +82,289 @@ th {
   border-radius: 8px;
 }
 
-button {
-  color: #fac670;
-  border: 2px solid #fac670;
-  background-color: #1b1a19;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-form {
- padding-left: 32px;
- padding-top: 8px;
-}
-
 select {
  width: 170px;
 }
 
 h1 {
- color: #fac670;
- font-size: 100%;
- padding-bottom: 0px;
- margin-bottom: 0px;
+ padding: 0px;
+ margin: 4px 20px 20px 4;
+ font-size: 150%;
  font-family: Arial;
  font-weight: 700;
 }
 
-input {
- border-radius: 6px;
- border: 1px solid;
- background-color: #fef5e6;
+
+
+* {
+  box-sizing: border-box;
 }
 
-select {
- border-radius: 6px;
- border: 1px solid;
- background-color: #fef5e6;
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  font-size: 80%;
+}
+
+input[type=number] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  font-size: 80%
+}
+
+label {
+  padding: 12px 12px 12px 25px;
+  display: inline-block;
+  font-family: Arial;
+}
+
+input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  padding-bottom: 10;
+  margin: 20px;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
 }
 
 </style>
 <br>
 <body>
+
+
     <div class="split left">
         <div style="line-height: 20px; font-family: Arial; font-size: 190%; font-weight: 1000; color: #fac670; padding: 22px;">
             chukarin
         </div>
-        <form method="post" action="add">
-            <h1>Add</h1>
-            <input type="text" name="name" placeholder="Name"/>
-            <br>
-            <select name="categoryId">
-                <option value="1">Outerwear</option>
-                <option value="2">Jackets</option>
-                <option value="3">Trousers</option>
-                <option value="4">Jeans</option>
-                <option value="5">Shoes</option>
-                <option value="6">Sneakers</option>
-                <option value="7">Sweatpants</option>
-                <option value="8">Shorts</option>
-                <option value="9">Shirts</option>
-                <option value="10">Hats</option>
-            </select>
-            <br>
-            <select name="size" >
-                <optgroup label="Clothes">
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                </optgroup>
-                <optgroup label="Shoes">
-                    <option value="38">38</option>
-                    <option value="38">39</option>
-                    <option value="38">40</option>
-                    <option value="38">41</option>
-                </optgroup>
-                <optgroup label="Hats">
-                    <option value="one_size">One Size</option>
-                </optgroup>
-            </select>
-            <br>
-            <input type="text" name="count" placeholder="Amount"/>
-            <br>
-            <input type="text" name="price" placeholder="Price"/>
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <button type="submit">Submit</button>
-        </form>
-        <form method="post" action="filter">
-            <h1>Filter</h1>
-            <input type="number" name="from" placeholder="From"/>
-            <br>
-            <input type="number" name="to" placeholder="To"/>
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <button type="submit">Submit</button>
-        </form>
-        <form method="post" action="update">
-            <h1>Update</h1>
-            <input type="number" name="id" placeholder="id"/>
-            <br>
-            <input type="text" name="name" placeholder="New name"/>
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <button type="submit">Submit</button>
-        </form>
-        <form method="post" action="delete">
-            <h1>Delete</h1>
-            <input type="number" name="id" placeholder="id"/>
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <button type="submit">Submit</button>
-        </form>
-        <p class="centered" style="background-color: #fac670">{{message}}</p>
+
+
+        <div class="container">
+            <form method="post" action="add">
+                <h1>Add</h1>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="gname">Name</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="gname" name="name" placeholder="Name"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="gcategory">Category</label>
+                    </div>
+                    <div class="col-75">
+                        <select id="gcategory" name="categoryId">
+                            <option value="1">Outerwear</option>
+                            <option value="2">Jackets</option>
+                            <option value="3">Trousers</option>
+                            <option value="4">Jeans</option>
+                            <option value="5">Shoes</option>
+                            <option value="6">Sneakers</option>
+                            <option value="7">Sweatpants</option>
+                            <option value="8">Shorts</option>
+                            <option value="9">Shirts</option>
+                            <option value="10">Hats</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="gsize">Size</label>
+                    </div>
+                    <div class="col-75">
+                        <select id="gsize" name="size" >
+                            <optgroup label="Clothes">
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                            </optgroup>
+                            <optgroup label="Shoes">
+                                <option value="38">38</option>
+                                <option value="38">39</option>
+                                <option value="38">40</option>
+                                <option value="38">41</option>
+                            </optgroup>
+                            <optgroup label="Hats">
+                                <option value="one_size">One Size</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="gamount">Amount</label>
+                    </div>
+                    <div class="col-75">
+                        <input id="gamount" type="text" name="count" placeholder="Amount"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="gprice">Price</label>
+                    </div>
+                    <div class="col-75">
+                        <input id="gprice" type="text" name="price" placeholder="Price"/>
+                    </div>
+                </div>
+
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+
+                <div class="row">
+                    <input type="submit" value="Submit"/>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="container">
+            <form method="post" action="filter">
+                <h1>Find</h1>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="gfrom">From</label>
+                    </div>
+                    <div class="col-75">
+                        <input id="gfrom" type="number" name="from" placeholder="From"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="gto">To</label>
+                    </div>
+                    <div class="col-75">
+                        <input id="gto" type="number" name="to" placeholder="To"/>
+                    </div>
+                </div>
+
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+
+                <div class="row">
+                    <input type="submit" value="Submit"></input>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="container">
+            <form method="post" action="update">
+                <h1>Update</h1>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="gid">id</label>
+                    </div>
+                    <div class="col-75">
+                        <input id="gid" type="number" name="id" placeholder="id"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="gnewname">New name</label>
+                    </div>
+                    <div class="col-75">
+                        <input id="gnewname" type="text" name="name" placeholder="New name"/>
+                    </div>
+                </div>
+
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+
+                <div class="row">
+                    <input type="submit" value="Submit"/>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="container">
+            <form method="post" action="delete">
+                <h1>Delete</h1>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="did">id</label>
+                    </div>
+                    <div class="col-75">
+                        <input id="did" type="number" name="id" placeholder="id"/>
+                    </div>
+                </div>
+
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+
+                <div class="row">
+                    <input type="submit" value="Submit"/>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="split right">
         <form action="/logout" method="post">
             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <input type="submit" value="Sign Out" style="background-color:#F76588;border-color:F76588"/>
+            <input type="submit" value="Sign Out" style="background-color: #1b1a19"/>
         </form>
-    </div>
-    <div class="split right">
+        <br>
+
+        <div class="container" style="background-color: black; width: 90%;" >
+            <p>~{{message}}</p>
+        </div>
+
         <table>
             <tr bgcolor="fac670">
                 <th>id</th>
