@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Spring Security Example </title>
+    <title>Log in</title>
 </head>
-<body style="background-color:oldlace">
-<div>Log in to your account</div>
+<style>
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+div {
+ color: #1b1a19
+}
+
+</style>
+<body bgcolor="1b1a19">
+<div style="line-height: 20px; font-family: Arial; font-size: 190%; font-weight: 1000; color: #fac670; padding: 22px;">
+    chukarin
+</div>
+<div class="centered" style="background-color: #fac670">
 <form action="login" method="post">
-    <div><input type="text" name="username" placeholder="Login"/></div>
-    <div><input type="password" name="password" placeholder="Password"/></div>
+    <div style="font-family: Arial; font-color: #1b1a19; font-weight:700">Log in to your account</div>
+    <br>
+    <div><input style="margin-bottom: 6px; border-radius: 6px; border: 2px solid #f37925; background-color: #fef5e6" type="text" name="username" placeholder="Login"/></div>
+    <div><input style="margin-bottom: 6px; border-radius: 6px; border: 2px solid #f37925; background-color: #fef5e6" type="password" name="password" placeholder="Password"/></div>
     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-    <div><input type="submit" value="Sign In" style="background-color:#F76588;border-color:#F76588"/></div>
+    <div><input type="submit" value="Sign In" style="background-color:#3ac261;border-radius: 8px; border: 2px solid #3ac261"/></div>
 </form>
+</div>
 </body>
 </html>
