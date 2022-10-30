@@ -1,5 +1,4 @@
 package com.example.clothingShop;
-
 import com.example.clothingShop.domain.Good;
 import com.example.clothingShop.repos.GoodRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,43 +23,47 @@ public class GreetingController {
         return "greeting";
     }
 
+
     @GetMapping("/main")
     public String main(Map<String, Object> model) {
         Iterable<Good> goods = goodRepo.findAll();
         model.put("message", "hello!");
         model.put("goods", goods);
-
         return "main";
     }
 
+
     @PostMapping("add")
     public String add(@RequestParam String name,
-                      @RequestParam int categoryId,
+                      @RequestParam Integer categoryId,
                       @RequestParam String size,
-                      @RequestParam int count,
-                      @RequestParam int price,
+                      @RequestParam Integer count,
+                      @RequestParam Integer price,
                       Map<String, Object> model) {
 
-        if ((categoryId == 1 ||
-                categoryId == 2 ||
-                categoryId == 3 ||
-                categoryId == 4 ||
-                categoryId == 7 ||
-                categoryId == 8 ||
-                categoryId == 9) &&
-                !size.equals("S") && !size.equals("M") && !size.equals("L") && !size.equals("XL")
-        ) {
+        ArrayList<Integer> clothesIdList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 7, 8, 9));
+        ArrayList<Integer> shoesIdList = new ArrayList<>(Arrays.asList(5, 6));
+        ArrayList<String> clothesSizes = new ArrayList<>(Arrays.asList("S", "M", "L", "XL"));
+        ArrayList<String> shoesSizes = new ArrayList<>(Arrays.asList("38", "39", "40", "41"));
+
+
+        if (name == null || categoryId == null || size == null || count == null || price == null) {
             Iterable<Good> goods = goodRepo.findAll();
-            model.put("message", "wrong size type");
+            model.put("message", "not all fields are filled in");
             model.put("goods", goods);
             return "main";
         }
 
-        if ((categoryId == 5 ||
-                categoryId == 6) &&
-                !size.equals("38") && !size.equals("39") && !size.equals("40") && !size.equals("41")) {
+        if (clothesIdList.contains(categoryId) && !clothesSizes.contains(size)) {
             Iterable<Good> goods = goodRepo.findAll();
-            model.put("message", "wrong size type");
+            model.put("message", "wrong size type for clothes");
+            model.put("goods", goods);
+            return "main";
+        }
+
+        if (shoesIdList.contains(categoryId) && !shoesSizes.contains(size)) {
+            Iterable<Good> goods = goodRepo.findAll();
+            model.put("message", "wrong size type for shoes");
             model.put("goods", goods);
             return "main";
         }
@@ -68,33 +71,33 @@ public class GreetingController {
         System.out.println(size);
         if (categoryId == 10 && !size.equals("one_size")) {
             Iterable<Good> goods = goodRepo.findAll();
-            model.put("message", "wrong size type");
+            model.put("message", "wrong size type for headdress");
             model.put("goods", goods);
             return "main";
         }
 
         Good good = new Good(name, categoryId, size, count, price);
-
         goodRepo.save(good);
-
         Iterable<Good> goods = goodRepo.findAll();
-
         model.put("message", "record added");
         model.put("goods", goods);
-
         return "main";
     }
 
     @PostMapping("delete")
     public String delete(@RequestParam Integer id, Map<String, Object> model) {
+        String message = "";
 
-        goodRepo.deleteById(id);
+        if (id == null) {
+            message = "id is not selected";
+        } else {
+            goodRepo.deleteById(id);
+            message = "record deleted";
+        }
 
         Iterable<Good> goods = goodRepo.findAll();
-
-        model.put("message", "record deleted");
+        model.put("message", message);
         model.put("goods", goods);
-
         return "main";
     }
 
@@ -124,14 +127,10 @@ public class GreetingController {
     @PostMapping("update")
     public String update(@RequestParam Integer id, @RequestParam String name, Map<String, Object> model) {
         Iterable<Good> goods = goodRepo.findAll();
-
         goodRepo.findById(id).get().setName(name);
-
         goodRepo.saveAll(goods);
-
         model.put("message", "record updated");
         model.put("goods", goods);
-
         return "main";
     }
 }
