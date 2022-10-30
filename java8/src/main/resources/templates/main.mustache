@@ -13,10 +13,12 @@ p {
  color: green;
  font-family: 'Courier New', monospace;
  font-weight: 700;
+ padding: 0px;
+ margin: 0px;
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -143,7 +145,7 @@ input[type=submit]:hover {
   background-color: #f2f2f2;
   padding: 20px;
   padding-bottom: 10;
-  margin: 20px;
+  margin: 32px;
 }
 
 .col-25 {
@@ -357,11 +359,11 @@ input[type=submit]:hover {
     <div class="split right">
         <form action="/logout" method="post">
             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <input type="submit" value="Sign Out" style="background-color: #1b1a19"/>
+            <input type="submit" value="Sign Out" style="background-color: #1b1a19;color: #5d5a56; margin-top: 10px"/>
         </form>
         <br>
 
-        <div class="container" style="background-color: black; width: 90%;" >
+        <div class="container" style="background-color: black; width: 90%; padding: 10px; margin: 30px" >
             <p>~{{message}}</p>
         </div>
 
