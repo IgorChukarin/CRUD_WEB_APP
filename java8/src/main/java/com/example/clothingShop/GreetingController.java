@@ -106,30 +106,52 @@ public class GreetingController {
         Iterable<Good> goods = goodRepo.findAll();
         ArrayList<Good> goodsList = new ArrayList<>();
         List<Good> filteredGoodsList;
+        String message = "";
+        goods.forEach(g -> goodsList.add(g));
 
         if (from == null && to == null) {
             model.put("message", "no filters set");
             model.put("goods", goods);
             return "main";
         }
-
-        goods.forEach(g -> goodsList.add(g));
-
-        filteredGoodsList = goodsList.stream()
-                .filter(g -> from < g.getPrice() && g.getPrice() < to).collect(Collectors.toList());
-
-        model.put("message", "filtered out");
+        else if (from != null && to == null) {
+            message = "from " + from;
+            filteredGoodsList = goodsList.stream()
+                                         .filter(g -> from <= g.getPrice())
+                                         .collect(Collectors.toList());
+        }
+        else if (from == null && to != null) {
+            message = "up to " + to;
+            filteredGoodsList = goodsList.stream()
+                                         .filter(g -> g.getPrice() <= to)
+                                         .collect(Collectors.toList());
+        }
+        else {
+            message = "form " + from + " to " + to;
+            filteredGoodsList = goodsList.stream()
+                                         .filter(g -> from <= g.getPrice() && g.getPrice() <= to)
+                                         .collect(Collectors.toList());
+        }
+        model.put("message", message);
         model.put("goods", filteredGoodsList);
-
         return "main";
     }
+
 
     @PostMapping("update")
     public String update(@RequestParam Integer id, @RequestParam String name, Map<String, Object> model) {
         Iterable<Good> goods = goodRepo.findAll();
-        goodRepo.findById(id).get().setName(name);
-        goodRepo.saveAll(goods);
-        model.put("message", "record updated");
+        String message = "";
+
+        if (id == null || name == null) {
+            message = "not all fields are filled in";
+        }
+        else {
+            message = "record updated";
+            goodRepo.findById(id).get().setName(name);
+            goodRepo.saveAll(goods);
+        }
+        model.put("message", message);
         model.put("goods", goods);
         return "main";
     }
