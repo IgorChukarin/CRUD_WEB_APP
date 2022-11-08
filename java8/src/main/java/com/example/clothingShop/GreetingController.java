@@ -15,8 +15,11 @@ import java.util.stream.Collectors;
 
 @Controller
 public class GreetingController {
+
+
     @Autowired
     private GoodRepo goodRepo;
+
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
@@ -86,8 +89,7 @@ public class GreetingController {
 
     @PostMapping("delete")
     public String delete(@RequestParam Integer id, Map<String, Object> model) {
-        String message = "";
-
+        String message;
         if (id == null) {
             message = "id is not selected";
         } else {
@@ -96,6 +98,7 @@ public class GreetingController {
         }
 
         Iterable<Good> goods = goodRepo.findAll();
+        
         model.put("message", message);
         model.put("goods", goods);
         return "main";
@@ -103,37 +106,22 @@ public class GreetingController {
 
     @PostMapping("filter")
     public String filter(@RequestParam Integer from, @RequestParam Integer to, Map<String, Object> model) {
-        Iterable<Good> goods = goodRepo.findAll();
-        ArrayList<Good> goodsList = new ArrayList<>();
-        List<Good> filteredGoodsList;
-        String message = "";
-        goods.forEach(g -> goodsList.add(g));
-
+        String message;
         if (from == null && to == null) {
-            model.put("message", "no filters set");
-            model.put("goods", goods);
-            return "main";
-        }
-        else if (from != null && to == null) {
+            message = "no filters set";
+        }else if (from != null && to == null) {
             message = "from " + from;
-            filteredGoodsList = goodsList.stream()
-                                         .filter(g -> from <= g.getPrice())
-                                         .collect(Collectors.toList());
-        }
-        else if (from == null && to != null) {
+        }else if (from == null && to != null) {
             message = "up to " + to;
-            filteredGoodsList = goodsList.stream()
-                                         .filter(g -> g.getPrice() <= to)
-                                         .collect(Collectors.toList());
+        }else {
+            message = "from " + from + " to " + to;
         }
-        else {
-            message = "form " + from + " to " + to;
-            filteredGoodsList = goodsList.stream()
-                                         .filter(g -> from <= g.getPrice() && g.getPrice() <= to)
-                                         .collect(Collectors.toList());
-        }
+
+        Iterable<Good> goods = goodRepo.findAll();
+        List<Good> filteredGoods = filterGoods(from, to, (ArrayList) goods);
+
         model.put("message", message);
-        model.put("goods", filteredGoodsList);
+        model.put("goods", filteredGoods);
         return "main";
     }
 
@@ -141,8 +129,8 @@ public class GreetingController {
     @PostMapping("update")
     public String update(@RequestParam Integer id, @RequestParam String name, Map<String, Object> model) {
         Iterable<Good> goods = goodRepo.findAll();
-        String message = "";
 
+        String message;
         if (id == null || name == null) {
             message = "not all fields are filled in";
         }
@@ -154,5 +142,24 @@ public class GreetingController {
         model.put("message", message);
         model.put("goods", goods);
         return "main";
+    }
+
+
+    private ArrayList filterGoods(Integer priceFrom, Integer priceTo, ArrayList<Good> listOfGoods) {
+        if (priceFrom == null && priceTo == null) {
+            return listOfGoods;
+        }
+        else if (priceFrom != null && priceTo == null) {
+            return (ArrayList) listOfGoods.stream().filter(good -> priceFrom <= good.getPrice())
+                                          .collect(Collectors.toList());
+        }
+        else if (priceFrom == null && priceTo != null) {
+            return (ArrayList) listOfGoods.stream().filter(good -> good.getPrice() <= priceTo)
+                                          .collect(Collectors.toList());
+        }
+        else {
+            return (ArrayList) listOfGoods.stream().filter(good -> priceFrom <= good.getPrice() && good.getPrice() <= priceTo)
+                                          .collect(Collectors.toList());
+        }
     }
 }
