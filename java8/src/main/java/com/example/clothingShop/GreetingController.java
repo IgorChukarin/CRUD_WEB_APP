@@ -37,52 +37,36 @@ public class GreetingController {
 
 
     @PostMapping("add")
-    public String add(@RequestParam String name,
-                      @RequestParam Integer categoryId,
-                      @RequestParam String size,
-                      @RequestParam Integer count,
-                      @RequestParam Integer price,
-                      Map<String, Object> model) {
+    public String add(@RequestParam String name, @RequestParam Integer categoryId,
+                      @RequestParam String size, @RequestParam Integer count,
+                      @RequestParam Integer price, Map<String, Object> model) {
 
         ArrayList<Integer> clothesIdList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 7, 8, 9));
         ArrayList<Integer> shoesIdList = new ArrayList<>(Arrays.asList(5, 6));
         ArrayList<String> clothesSizes = new ArrayList<>(Arrays.asList("S", "M", "L", "XL"));
         ArrayList<String> shoesSizes = new ArrayList<>(Arrays.asList("38", "39", "40", "41"));
 
-
+        String message;
         if (name == null || categoryId == null || size == null || count == null || price == null) {
-            Iterable<Good> goods = goodRepo.findAll();
-            model.put("message", "not all fields are filled in");
-            model.put("goods", goods);
-            return "main";
+            message = "not all fields are filled in";
+        }
+        else if (clothesIdList.contains(categoryId) && !clothesSizes.contains(size)) {
+            message = "wrong size type for clothes";
+        }
+        else if (shoesIdList.contains(categoryId) && !shoesSizes.contains(size)) {
+            message = "wrong size type for shoes";
+        }
+        else if (categoryId == 10 && !size.equals("one_size")) {
+            message = "wrong size type for headdress";
+        }
+        else {
+            Good good = new Good(name, categoryId, size, count, price);
+            message = "record added";
+            goodRepo.save(good);
         }
 
-        if (clothesIdList.contains(categoryId) && !clothesSizes.contains(size)) {
-            Iterable<Good> goods = goodRepo.findAll();
-            model.put("message", "wrong size type for clothes");
-            model.put("goods", goods);
-            return "main";
-        }
-
-        if (shoesIdList.contains(categoryId) && !shoesSizes.contains(size)) {
-            Iterable<Good> goods = goodRepo.findAll();
-            model.put("message", "wrong size type for shoes");
-            model.put("goods", goods);
-            return "main";
-        }
-
-        System.out.println(size);
-        if (categoryId == 10 && !size.equals("one_size")) {
-            Iterable<Good> goods = goodRepo.findAll();
-            model.put("message", "wrong size type for headdress");
-            model.put("goods", goods);
-            return "main";
-        }
-
-        Good good = new Good(name, categoryId, size, count, price);
-        goodRepo.save(good);
         Iterable<Good> goods = goodRepo.findAll();
-        model.put("message", "record added");
+        model.put("message", message);
         model.put("goods", goods);
         return "main";
     }
@@ -98,7 +82,7 @@ public class GreetingController {
         }
 
         Iterable<Good> goods = goodRepo.findAll();
-        
+
         model.put("message", message);
         model.put("goods", goods);
         return "main";
