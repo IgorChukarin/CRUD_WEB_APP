@@ -109,6 +109,8 @@ public class GreetingController {
 
 
     private ArrayList filterGoods(Integer priceFrom, Integer priceTo, ArrayList<Good> listOfGoods) {
+        Iterable<Good> goods = goodRepo.findAll();
+        ArrayList<Good> arr = (ArrayList) goods;
           if (priceFrom != null && priceTo == null) {
             listOfGoods = (ArrayList) listOfGoods.stream()
                     .filter(good -> priceFrom <= good.getPrice())
@@ -140,27 +142,17 @@ public class GreetingController {
 
 
     private String setMessageForUpdate(Integer id, String name) {
-        if (id != null && name != null) {
-            return "record updated";
-        } else {
-            return "not all fields are filled in";
-        }
+        return  (id != null && name != null) ? "record updated" : "not all fields are filled in";
     }
 
 
     private String setMessageForDelete(Integer id) {
-        if (id != null) {
-            return "record deleted";
-        } else {
-            return "not all fields are filled in";
-        }
+        return (id != null) ? "record deleted" : "not all fields are filled in";
     }
 
 
     private void setNewNameById(Integer id, String name) {
-        if (id != null && name != null) {
-            goodRepo.findById(id).get().setName(name);
-        }
+        if (id != null && name != null) goodRepo.findById(id).get().setName(name);
     }
 }
 
