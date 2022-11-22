@@ -1,0 +1,8 @@
+
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ﬁç…Á
+V
+java:S1128"ARemove this unused import 'com.example.clothingShop.domain.Good'.(È«≠
+Z
+java:S1128"DRemove this unused import 'com.example.clothingShop.repos.GoodRepo'.(–˝£¥
+z
+java:S1128"dRemove this unused import 'org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration'.(¶ñ∑À

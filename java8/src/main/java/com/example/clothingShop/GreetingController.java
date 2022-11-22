@@ -15,12 +15,10 @@ public class GreetingController {
     @Autowired
     private GoodRepo goodRepo;
 
-
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
         return "greeting";
     }
-
 
     @GetMapping("/main")
     public String main(Map<String, Object> model) {
@@ -67,15 +65,12 @@ public class GreetingController {
     }
 
 
-
-
     @PostMapping("delete")
     public String delete(@RequestParam Integer id, Map<String, Object> model) {
         String message = setMessageForDelete(id);
         if (id != null) {
             goodRepo.deleteById(id);
         }
-
         Iterable<Good> goods = goodRepo.findAll();
         model.put("message", message);
         model.put("goods", goods);
@@ -84,12 +79,9 @@ public class GreetingController {
 
 
     @PostMapping("filter")
-    public String filter(@RequestParam Integer from, @RequestParam Integer to, Map<String, Object> model) {
-        String message = setMessageForFilter(from, to);
-
-        Iterable<Good> goods = goodRepo.findAll();
-        List<Good> filteredGoods = filterGoods(from, to, (ArrayList) goods);
-
+    public String filter(@RequestParam Integer priceFrom, @RequestParam Integer priceTo, Map<String, Object> model) {
+        String message = setMessageForFilter(priceFrom, priceTo);
+        List<Good> filteredGoods = filterGoodsByPrice(priceFrom, priceTo);
         model.put("message", message);
         model.put("goods", filteredGoods);
         return "main";
@@ -108,10 +100,12 @@ public class GreetingController {
     }
 
 
-    private ArrayList filterGoods(Integer priceFrom, Integer priceTo, ArrayList<Good> listOfGoods) {
-        Iterable<Good> goods = goodRepo.findAll();
-        ArrayList<Good> arr = (ArrayList) goods;
-          if (priceFrom != null && priceTo == null) {
+    private ArrayList filterGoodsByPrice(Integer priceFrom, Integer priceTo) {
+        ArrayList<Good> listOfGoods = (ArrayList<Good>) goodRepo.findAll();
+
+        if (priceFrom == null && priceTo == null) {
+            listOfGoods = (ArrayList<Good>) goodRepo.findAll();
+        } else if (priceFrom != null && priceTo == null) {
             listOfGoods = (ArrayList) listOfGoods.stream()
                     .filter(good -> priceFrom <= good.getPrice())
                     .collect(Collectors.toList());
@@ -129,15 +123,17 @@ public class GreetingController {
 
 
     private String setMessageForFilter(Integer from, Integer to) {
+        String message;
         if (from == null && to == null) {
-            return"no filters set";
+            message = "no filters set";
         }else if (from != null && to == null) {
-            return "from " + from;
+            message = "from " + from;
         }else if (from == null && to != null) {
-            return "up to " + to;
+            message = "up to " + to;
         }else {
-            return "from " + from + " to " + to;
+            message = "from " + from + " to " + to;
         }
+        return message;
     }
 
 
