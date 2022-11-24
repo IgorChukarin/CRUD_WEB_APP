@@ -34,11 +34,22 @@ public class GreetingController {
                       @RequestParam String size, @RequestParam Integer count,
                       @RequestParam Integer price, Map<String, Object> model) {
 
+        if (name != null && categoryId != null && size != null && count != null && price != null) {
+            Good good = new Good(name, categoryId, size, count, price);
+            goodRepo.save(good);
+        }
+        Iterable<Good> goods = goodRepo.findAll();
+        String message = setMessageForAdd(name, categoryId, size, count, price);
+        model.put("message", message);
+        model.put("goods", goods);
+        return "main";
+    }
+
+    private String setMessageForAdd(String name, Integer categoryId, String size, Integer count, Integer price) {
         ArrayList<Integer> clothesIdList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 7, 8, 9));
         ArrayList<Integer> shoesIdList = new ArrayList<>(Arrays.asList(5, 6));
         ArrayList<String> clothesSizes = new ArrayList<>(Arrays.asList("S", "M", "L", "XL"));
         ArrayList<String> shoesSizes = new ArrayList<>(Arrays.asList("38", "39", "40", "41"));
-
         String message;
         if (name == null || categoryId == null || size == null || count == null || price == null) {
             message = "not all fields are filled in";
@@ -53,74 +64,37 @@ public class GreetingController {
             message = "wrong size type for headdress";
         }
         else {
-            Good good = new Good(name, categoryId, size, count, price);
             message = "record added";
-            goodRepo.save(good);
         }
-
-        Iterable<Good> goods = goodRepo.findAll();
-        model.put("message", message);
-        model.put("goods", goods);
-        return "main";
+        return message;
     }
 
 
     @PostMapping("delete")
     public String delete(@RequestParam Integer id, Map<String, Object> model) {
         String message = setMessageForDelete(id);
-        if (id != null) {
-            goodRepo.deleteById(id);
-        }
+        if (id != null) { goodRepo.deleteById(id); }
         Iterable<Good> goods = goodRepo.findAll();
         model.put("message", message);
         model.put("goods", goods);
         return "main";
+    }
+
+    private String setMessageForDelete(Integer id) {
+        return (id != null) ? "record deleted" : "not all fields are filled in";
     }
 
 
     @PostMapping("filter")
-    public String filter(@RequestParam Integer priceFrom, @RequestParam Integer priceTo, Map<String, Object> model) {
+    public String filter(@RequestParam Map<String, String> priceFromTo, Map<String, Object> model) {
+        Integer priceFrom = convertStringNumberToInteger(priceFromTo.get("priceFrom"));
+        Integer priceTo = convertStringNumberToInteger(priceFromTo.get("priceTo"));
+        List filteredGoods = filterGoodsByPrice(priceFrom, priceTo);
         String message = setMessageForFilter(priceFrom, priceTo);
-        List<Good> filteredGoods = filterGoodsByPrice(priceFrom, priceTo);
         model.put("message", message);
         model.put("goods", filteredGoods);
         return "main";
     }
-
-
-    @PostMapping("update")
-    public String update(@RequestParam Integer id, @RequestParam String name, Map<String, Object> model) {
-        String message = setMessageForUpdate(id, name);
-        Iterable<Good> goods = goodRepo.findAll();
-        setNewNameById(id, name);
-        goodRepo.saveAll(goods);
-        model.put("message", message);
-        model.put("goods", goods);
-        return "main";
-    }
-
-
-    private ArrayList filterGoodsByPrice(Integer priceFrom, Integer priceTo) {
-        ArrayList<Good> listOfGoods = (ArrayList<Good>) goodRepo.findAll();
-
-        if (priceFrom == null && priceTo == null) {
-            listOfGoods = (ArrayList<Good>) goodRepo.findAll();
-        } else if (priceFrom != null && priceTo == null) {
-            listOfGoods = (ArrayList) listOfGoods.stream()
-                    .filter(good -> priceFrom <= good.getPrice())
-                    .collect(Collectors.toList());
-        } else if (priceFrom == null) {
-            listOfGoods = (ArrayList) listOfGoods.stream()
-                    .filter(good -> good.getPrice() <= priceTo)
-                    .collect(Collectors.toList());
-        } else {
-            listOfGoods = (ArrayList) listOfGoods.stream()
-                    .filter(good -> priceFrom <= good.getPrice() && good.getPrice() <= priceTo)
-                    .collect(Collectors.toList());
-        }
-        return listOfGoods;
-    }
-
 
     private String setMessageForFilter(Integer from, Integer to) {
         String message;
@@ -136,20 +110,47 @@ public class GreetingController {
         return message;
     }
 
+    private ArrayList filterGoodsByPrice(Integer priceFrom, Integer priceTo) {
+        ArrayList<Good> listOfGoods = (ArrayList<Good>) goodRepo.findAll();
+        if (priceFrom == null && priceTo == null) {
+            listOfGoods = (ArrayList<Good>) goodRepo.findAll();
+        } else if (priceFrom != null && priceTo == null) {
+            listOfGoods = (ArrayList<Good>) listOfGoods.stream().filter(good -> priceFrom <= good.getPrice())
+                    .collect(Collectors.toList());
+        } else if (priceFrom == null) {
+            listOfGoods = (ArrayList<Good>) listOfGoods.stream().filter(good -> good.getPrice() <= priceTo)
+                    .collect(Collectors.toList());
+        } else {
+            listOfGoods = (ArrayList<Good>) listOfGoods.stream().filter(good -> priceFrom <= good.getPrice() && good.getPrice() <= priceTo)
+                    .collect(Collectors.toList());
+        }
+        return listOfGoods;
+    }
+
+
+    @PostMapping("update")
+    public String update(@RequestParam Integer id, @RequestParam String newName, Map<String, Object> model) {
+        setNewNameById(id, newName);
+        Iterable<Good> goods = goodRepo.findAll();
+        goodRepo.saveAll(goods);
+        String message = setMessageForUpdate(id, newName);
+        model.put("message", message);
+        model.put("goods", goods);
+        return "main";
+    }
 
     private String setMessageForUpdate(Integer id, String name) {
         return  (id != null && name != null) ? "record updated" : "not all fields are filled in";
     }
 
-
-    private String setMessageForDelete(Integer id) {
-        return (id != null) ? "record deleted" : "not all fields are filled in";
+    private void setNewNameById(Integer id, String newName) {
+        if (id != null && newName != null) { goodRepo.findById(id).get().setName(newName); }
     }
 
 
-    private void setNewNameById(Integer id, String name) {
-        if (id != null && name != null) goodRepo.findById(id).get().setName(name);
+    private Integer convertStringNumberToInteger(String stringNumber) {
+        return (stringNumber.equals("")) ? null : Integer.valueOf(stringNumber);
     }
 }
 
-//TODO: refresh ids
+//TODO: refresh ids, methods checking that category fits size!!!

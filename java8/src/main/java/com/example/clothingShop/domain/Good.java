@@ -1,24 +1,20 @@
 package com.example.clothingShop.domain;
-
 import javax.persistence.*;
 
 @Entity
 public class Good {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private String name;
-
     private String size;
 
     @Column(name = "category_id")
     private int categoryId;
 
     private int count;
-
     private int price;
 
 
