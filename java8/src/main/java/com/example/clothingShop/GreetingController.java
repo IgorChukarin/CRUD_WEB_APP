@@ -30,11 +30,13 @@ public class GreetingController {
 
 
     @PostMapping("add")
-    public String add(@RequestParam String name, @RequestParam Integer categoryId,
-                      @RequestParam String size, @RequestParam Integer count,
-                      @RequestParam Integer price, Map<String, Object> model) {
-
-        if (name != null && categoryId != null && size != null && count != null && price != null) {
+    public String add(@RequestParam Map<String, String> goodData, Map<String, Object> model) {
+        String name = goodData.get("name");
+        Integer categoryId = convertStringNumberToInteger(goodData.get("categoryId"));
+        String size = goodData.get("size");
+        Integer count = convertStringNumberToInteger(goodData.get("count"));
+        Integer price = convertStringNumberToInteger(goodData.get("price"));
+        if (argumentsAreNotNull(name, categoryId, size, count, price) && sizeMatchingCategory(categoryId, size)) {
             Good good = new Good(name, categoryId, size, count, price);
             goodRepo.save(good);
         }
@@ -45,25 +47,35 @@ public class GreetingController {
         return "main";
     }
 
-    private String setMessageForAdd(String name, Integer categoryId, String size, Integer count, Integer price) {
+    private boolean argumentsAreNotNull(String name, Integer categoryId, String size, Integer count, Integer price) {
+        return name != null && categoryId != null && size != null && count != null && price != null;
+    }
+
+    private boolean sizeMatchingCategory(Integer categoryId, String size) {
+        boolean result;
         ArrayList<Integer> clothesIdList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 7, 8, 9));
         ArrayList<Integer> shoesIdList = new ArrayList<>(Arrays.asList(5, 6));
         ArrayList<String> clothesSizes = new ArrayList<>(Arrays.asList("S", "M", "L", "XL"));
         ArrayList<String> shoesSizes = new ArrayList<>(Arrays.asList("38", "39", "40", "41"));
+        if (clothesIdList.contains(categoryId) && !clothesSizes.contains(size)) {
+            result = false;
+        } else if (shoesIdList.contains(categoryId) && !shoesSizes.contains(size)) {
+            result = false;
+        } else if (categoryId == 10 && !size.equals("one_size")) {
+            result = false;
+        } else {
+            result = true;
+        }
+        return result;
+    }
+
+    private String setMessageForAdd(String name, Integer categoryId, String size, Integer count, Integer price) {
         String message;
-        if (name == null || categoryId == null || size == null || count == null || price == null) {
+        if (!argumentsAreNotNull(name, categoryId, size, count, price)) {
             message = "not all fields are filled in";
-        }
-        else if (clothesIdList.contains(categoryId) && !clothesSizes.contains(size)) {
-            message = "wrong size type for clothes";
-        }
-        else if (shoesIdList.contains(categoryId) && !shoesSizes.contains(size)) {
-            message = "wrong size type for shoes";
-        }
-        else if (categoryId == 10 && !size.equals("one_size")) {
-            message = "wrong size type for headdress";
-        }
-        else {
+        } else if (!sizeMatchingCategory(categoryId, size)) {
+            message = "size type doesn't match category";
+        } else {
             message = "record added";
         }
         return message;
