@@ -7,12 +7,16 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="checkProject" />
-        <module name="clothingShop" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="checkProject" target="8" />
       <module name="clothingShop" target="11" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="checkProject" options="-parameters" />
+      <module name="clothingShop" options="-parameters" />
+    </option>
   </component>
 </project>
